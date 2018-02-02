@@ -26,22 +26,27 @@ class MainActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var setAlarm: Button
     lateinit var stopAlarm: Button
+    lateinit var button: Button
     lateinit var textView: TextView
     lateinit var pendinIntent: PendingIntent
+
     var hour: Int = 0
     var min: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         this.context = this
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmTimePicker = findViewById<TimePicker>(R.id.timePick)
         setAlarm = findViewById<Button>(R.id.setAlarm)
         stopAlarm = findViewById<Button>(R.id.stopAlarm)
+        button = findViewById<Button>(R.id.button)
         textView = findViewById<TextView>(R.id.textView)
         var calendar: Calendar = Calendar.getInstance()
         var myIntent: Intent = Intent(this, AlarmReciever::class.java)
+
         setAlarm.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -84,6 +89,13 @@ class MainActivity : AppCompatActivity() {
                 alarmManager.cancel(pendinIntent)
                 myIntent.putExtra("extra","off")
                 sendBroadcast(myIntent)
+            }
+        })
+
+        button.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                var intent: Intent = Intent(this@MainActivity, Stopwatch::class.java)
+                startActivity(intent)
             }
         })
 
