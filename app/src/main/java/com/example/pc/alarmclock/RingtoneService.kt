@@ -1,5 +1,6 @@
 package com.example.pc.alarmclock
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -10,7 +11,10 @@ import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.IBinder
+import android.os.Vibrator
 import android.support.v4.app.NotificationCompat
+
+
 
 /**
  * Created by PC on 2/2/2018.
@@ -19,6 +23,7 @@ class RingtoneService: Service() {
     companion object {
         lateinit var ring: Ringtone
     }
+
     var id: Int = 0
     var isRunning: Boolean = false
     override fun onBind(intent: Intent?): IBinder? {
@@ -58,6 +63,7 @@ class RingtoneService: Service() {
         var main_intent: Intent = Intent(this, MainActivity::class.java)
         var pi: PendingIntent = PendingIntent.getActivity(this, 0, main_intent,0)
         val defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val v = longArrayOf(500, 1000)
 
         var notifyManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         var notification: Notification = NotificationCompat.Builder(this)
@@ -67,8 +73,11 @@ class RingtoneService: Service() {
                 .setContentText("Click me")
                 .setContentIntent(pi)
                 .setAutoCancel(true)
+                .setVibrate(longArrayOf(500, 5000))
                 .build()
         notifyManager.notify(0, notification)
+
+
 
     }
 
